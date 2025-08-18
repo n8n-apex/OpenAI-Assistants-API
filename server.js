@@ -15,9 +15,9 @@ const PUBLIC_ORIGIN = 'https://openai-assistants-api-production.up.railway.app';
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-  origin: PUBLIC_ORIGIN.split(',').map(o => o.trim()),
-  credentials: true
+  origin: "*"
 }));
+
 
 app.post('/chat', async (req, res) => {
   const { threadId, message } = req.body;
