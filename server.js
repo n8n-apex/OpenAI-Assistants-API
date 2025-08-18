@@ -7,10 +7,10 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const ASSISTANT_ID = process.env.ASSISTANT_ID;
-const PUBLIC_ORIGIN = process.env.PUBLIC_ORIGIN;
+const PORT = 3000;
+const OPENAI_API_KEY = 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;
+const ASSISTANT_ID = asst_nbnmuUxJrt0i6n7AztCy4FFZ;
+const PUBLIC_ORIGIN = http://localhost:3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
