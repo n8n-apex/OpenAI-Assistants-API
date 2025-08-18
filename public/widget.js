@@ -2,7 +2,7 @@
     // Load CSS
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://yourdomain/style.css";
+    link.href = "https://openai-assistants-api-production.up.railway.app/style.css";
     document.head.appendChild(link);
   
     // Load widget container
@@ -32,7 +32,7 @@
   
     // Load logic
     const script = document.createElement("script");
-    script.src = "https://yourdomain/app.js";
+    script.src = "https://openai-assistants-api-production.up.railway.app/app.js";
     document.body.appendChild(script);
   })();
   
