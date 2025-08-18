@@ -147,5 +147,9 @@ async function sendMessage() {
   }
 }
 
-// ✅ Show suggestions on page load (not on toggle)
-window.addEventListener('DOMContentLoaded', renderSuggestions);
+
+if (document.readyState === "loading") {
+  window.addEventListener('DOMContentLoaded', renderSuggestions);
+} else {
+  renderSuggestions(); // DOM already ready
+}
