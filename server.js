@@ -10,7 +10,7 @@ app.use(express.json());
 const PORT = 3000;
 const OPENAI_API_KEY = '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';
 const ASSISTANT_ID = 'asst_nbnmuUxJrt0i6n7AztCy4FFZ';
-const PUBLIC_ORIGIN = 'http://localhost:3000';
+const PUBLIC_ORIGIN = 'https://openai-assistants-api-production.up.railway.app';
 
 app.use(express.static(path.join(__dirname, 'public')));
 
