@@ -1,12 +1,12 @@
-// inline-embed.js - Simple version for Railway deployment
+// inline-embed.js - Styled to match your design
 (function() {
   if (window.__INLINE_CHAT_LOADED__) return;
   window.__INLINE_CHAT_LOADED__ = true;
 
   const script = document.currentScript || document.querySelector('script[src*="inline-embed.js"]');
-  const API_URL = 'https://openai-assistants-api-production.up.railway.app/chat';
+  const API_URL = script.getAttribute('data-api-url') || 'https://openai-assistants-api-production.up.railway.app/chat';
   const TARGET = script.getAttribute('data-target');
-  const HEIGHT = script.getAttribute('data-height') || '500px';
+  const HEIGHT = script.getAttribute('data-height') || '600px';
   const TITLE = script.getAttribute('data-title') || '💬 Ask AI Assistant';
 
   // Find or create container
@@ -23,161 +23,316 @@
     script.parentNode.insertBefore(container, script.nextSibling);
   }
 
-  // CSS
+  // CSS that matches your design
   const css = `
-    .inline-chat-widget {
+    .modern-chat-widget {
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
       margin: 20px auto;
-      border-radius: 16px;
+      border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
       background: white;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
       border: 1px solid #e5e7eb;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      position: relative;
     }
-    .inline-chat-main {
+
+    .modern-chat-container {
       display: flex;
       flex-direction: column;
       height: ${HEIGHT};
+      background: white;
     }
-    .inline-chat-header {
+
+    .modern-chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      background: white;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    .modern-chat-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      padding: 16px 20px;
+      font-size: 20px;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+
+    .modern-chat-title {
+      color: #1f2937;
+      font-size: 18px;
       font-weight: 600;
       text-align: center;
-    }
-    .inline-chat-body {
       flex: 1;
-      padding: 20px;
+    }
+
+    .modern-chat-body {
+      flex: 1;
+      padding: 32px 24px 24px;
       overflow-y: auto;
-      background: #fafafa;
+      background: white;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
-    .inline-chat-body.empty {
+
+    .modern-chat-body.empty {
       justify-content: center;
       align-items: center;
+      text-align: center;
     }
-    .inline-chat-message {
-      padding: 12px 16px;
-      border-radius: 16px;
-      max-width: 80%;
-      font-size: 14px;
+
+    .modern-chat-welcome {
+      color: #374151;
+      font-size: 16px;
+      margin-bottom: 24px;
       line-height: 1.5;
     }
-    .inline-chat-message.user {
+
+    .modern-chat-message {
+      padding: 16px 20px;
+      border-radius: 20px;
+      max-width: 85%;
+      font-size: 15px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .modern-chat-message.user {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       align-self: flex-end;
+      border-bottom-right-radius: 8px;
+      margin-left: auto;
     }
-    .inline-chat-message.bot {
-      background: white;
-      color: #333;
+
+    .modern-chat-message.bot {
+      background: #f8fafc;
+      color: #374151;
       align-self: flex-start;
+      border-bottom-left-radius: 8px;
       border: 1px solid #e5e7eb;
       white-space: pre-wrap;
     }
-    .inline-chat-suggestions {
+
+    .modern-chat-suggestions {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-width: 500px;
+      width: 100%;
+      max-width: 600px;
     }
-    .inline-chat-suggestion {
-      background: white;
+
+    .modern-chat-suggestion {
+      background: #f8fafc;
       border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 18px 24px;
       cursor: pointer;
-      text-align: center;
+      transition: all 0.2s ease;
+      font-size: 15px;
+      color: #374151;
+      font-weight: 500;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .modern-chat-suggestion:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .modern-chat-input-container {
+      padding: 24px;
+      background: white;
+      border-top: 1px solid #f1f3f4;
+    }
+
+    .modern-chat-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 2px solid #e5e7eb;
+      border-radius: 24px;
+      padding: 4px 4px 4px 20px;
       transition: all 0.2s ease;
     }
-    .inline-chat-suggestion:hover {
-      background: #f9fafb;
+
+    .modern-chat-input-wrapper:focus-within {
       border-color: #667eea;
-      transform: translateY(-1px);
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      background: white;
     }
-    .inline-chat-input-area {
-      display: flex;
-      border-top: 1px solid #e5e7eb;
-      padding: 16px 20px;
-      gap: 12px;
-    }
-    .inline-chat-input {
+
+    .modern-chat-input {
       flex: 1;
-      padding: 12px 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 24px;
-      font-size: 14px;
+      padding: 16px 16px 16px 0;
+      border: none;
+      background: transparent;
+      font-size: 15px;
       outline: none;
+      color: #374151;
+      font-family: inherit;
+      line-height: 1.4;
     }
-    .inline-chat-send-btn {
+
+    .modern-chat-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .modern-chat-send-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 50%;
+      border-radius: 20px;
       width: 44px;
       height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
     }
-    .inline-chat-typing {
+
+    .modern-chat-send-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .modern-chat-send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .modern-chat-typing {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 12px 16px;
-      background: white;
+      gap: 8px;
+      padding: 16px 20px;
+      background: #f8fafc;
+      color: #6b7280;
       border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      font-size: 13px;
+      border-radius: 20px;
+      border-bottom-left-radius: 8px;
+      font-size: 14px;
       align-self: flex-start;
+      margin-bottom: 8px;
     }
-    .inline-chat-typing span {
-      width: 6px;
-      height: 6px;
+
+    .modern-chat-typing span {
+      width: 8px;
+      height: 8px;
       background: #9ca3af;
       border-radius: 50%;
-      animation: bounce 1.4s infinite;
+      animation: modern-bounce 1.4s infinite;
     }
-    .inline-chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-    .inline-chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+
+    .modern-chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .modern-chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes modern-bounce {
+      0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
       40% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .modern-chat-widget {
+        margin: 10px;
+        border-radius: 20px;
+        max-width: calc(100vw - 20px);
+      }
+      
+      .modern-chat-container {
+        height: 500px;
+      }
+      
+      .modern-chat-body {
+        padding: 20px 16px 16px;
+      }
+      
+      .modern-chat-input-container {
+        padding: 16px;
+      }
+      
+      .modern-chat-suggestion {
+        padding: 16px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Scrollbar styling */
+    .modern-chat-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-chat-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .modern-chat-body::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+
+    .modern-chat-body::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
     }
   `;
 
   // Inject CSS
-  const style = document.createElement('style');
-  style.textContent = css;
-  document.head.appendChild(style);
+  if (!document.querySelector('#modern-chat-styles')) {
+    const style = document.createElement('style');
+    style.id = 'modern-chat-styles';
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
 
   // Create widget
   const widgetId = 'chat-' + Math.random().toString(36).substr(2, 9);
   container.innerHTML = `
-    <div class="inline-chat-widget">
-      <div class="inline-chat-main">
-        <div class="inline-chat-header">${TITLE}</div>
-        <div class="inline-chat-body empty" id="${widgetId}-body"></div>
-        <div class="inline-chat-input-area">
-          <input type="text" class="inline-chat-input" id="${widgetId}-input" placeholder="Type your question..." />
-          <button class="inline-chat-send-btn" id="${widgetId}-send">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
-            </svg>
-          </button>
+    <div class="modern-chat-widget">
+      <div class="modern-chat-container">
+        <div class="modern-chat-header">
+          <div class="modern-chat-avatar">🤖</div>
+          <div class="modern-chat-title">${TITLE}</div>
+        </div>
+        <div class="modern-chat-body empty" id="${widgetId}-body"></div>
+        <div class="modern-chat-input-container">
+          <div class="modern-chat-input-wrapper">
+            <input 
+              type="text" 
+              class="modern-chat-input" 
+              id="${widgetId}-input" 
+              placeholder="Versuchen Sie, diese Fragen zu stellen..." 
+            />
+            <button class="modern-chat-send-btn" id="${widgetId}-send">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   `;
 
   // Chat functionality
-  let threadId = '';
+  let threadId = localStorage.getItem('chat-thread-id') || '';
   let hasSuggestions = true;
   const chatBody = document.getElementById(widgetId + '-body');
   const chatInput = document.getElementById(widgetId + '-input');
@@ -185,7 +340,7 @@
 
   function addMessage(content, sender) {
     const msg = document.createElement('div');
-    msg.className = 'inline-chat-message ' + sender;
+    msg.className = 'modern-chat-message ' + sender;
     msg.textContent = content;
     chatBody.appendChild(msg);
     chatBody.classList.remove('empty');
@@ -196,22 +351,29 @@
   function showSuggestions() {
     if (!hasSuggestions) return;
     
-    const suggestions = document.createElement('div');
-    suggestions.className = 'inline-chat-suggestions';
-    suggestions.innerHTML = `
-      <div style="font-size: 14px; color: #6b7280; text-align: center; margin-bottom: 12px;">
-        Try asking these questions...
-      </div>
-      <div class="inline-chat-suggestion">Ich möchte meine bisherige Positionierung schärfen!</div>
-      <div class="inline-chat-suggestion">Wie lautet deine bisherige Positionierung?</div>
-      <div class="inline-chat-suggestion">Hilf mir bei meiner Content-Strategie.</div>
-    `;
+    const welcome = document.createElement('div');
+    welcome.className = 'modern-chat-welcome';
+    welcome.textContent = 'Versuchen Sie, diese Fragen zu stellen...';
+    chatBody.appendChild(welcome);
     
-    suggestions.querySelectorAll('.inline-chat-suggestion').forEach(el => {
-      el.onclick = () => {
-        chatInput.value = el.textContent;
+    const suggestions = document.createElement('div');
+    suggestions.className = 'modern-chat-suggestions';
+    
+    const suggestionTexts = [
+      'Ich möchte meine bisherige Positionierung schärfen!',
+      'Wie lautet deine bisherige Positionierung?',
+      'Hilf mir bei meiner Content-Strategie.'
+    ];
+    
+    suggestionTexts.forEach(text => {
+      const suggestion = document.createElement('div');
+      suggestion.className = 'modern-chat-suggestion';
+      suggestion.textContent = text;
+      suggestion.onclick = () => {
+        chatInput.value = text;
         sendMessage();
       };
+      suggestions.appendChild(suggestion);
     });
     
     chatBody.appendChild(suggestions);
@@ -234,7 +396,7 @@
 
     const botMsg = addMessage('', 'bot');
     const typing = document.createElement('div');
-    typing.className = 'inline-chat-typing';
+    typing.className = 'modern-chat-typing';
     typing.innerHTML = 'Getting your answer <span></span><span></span><span></span>';
     chatBody.appendChild(typing);
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -263,6 +425,7 @@
               const parsed = JSON.parse(json);
               if (parsed.threadId && !threadId) {
                 threadId = parsed.threadId;
+                localStorage.setItem('chat-thread-id', threadId);
               }
               if (parsed.delta) {
                 if (typing.parentNode) typing.remove();
