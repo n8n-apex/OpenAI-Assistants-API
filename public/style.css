@@ -6,8 +6,8 @@ body {
 
 /* Chat Widget */
 #chat-widget {
-  display: none;
-  position: relative;
+  display: flex;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
