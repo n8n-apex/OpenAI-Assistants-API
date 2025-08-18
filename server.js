@@ -7,18 +7,35 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ASSISTANT_ID = process.env.ASSISTANT_ID;
-const PUBLIC_ORIGIN = 'https://openai-assistants-api-production.up.railway.app';
 
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
   origin: "*"
 }));
 
+// ✅ NEW: Serve the inline embed script
+app.get('/inline-embed.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+  res.sendFile(path.join(__dirname, 'public', 'inline-embed.js'));
+});
 
+// ✅ NEW: Serve embed page (iframe version)
+app.get('/embed', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'embed.html'));
+});
+
+// ✅ NEW: Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Existing chat endpoint
 app.post('/chat', async (req, res) => {
   const { threadId, message } = req.body;
   let tId = threadId;
@@ -135,13 +152,14 @@ app.post('/chat', async (req, res) => {
     
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
-  }catch (err) {
+  } catch (err) {
     console.error("💥 Server error:", err);
     res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
     res.end();
   }
 });
 
-
-
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📱 Inline embed script available at: ${process.env.RAILWAY_PUBLIC_DOMAIN || 'http://localhost:' + PORT}/inline-embed.js`);
+});
