@@ -153,7 +153,7 @@ app.post('/chat', async (req, res) => {
   res.setHeader('Connection', 'keep-alive');
 
   // Kickstart SSE so client starts listening
-  res.write(\`:\\n\\n\`);
+  res.write(':\n\n');
 
   try {
     // Create thread if needed
@@ -162,7 +162,7 @@ app.post('/chat', async (req, res) => {
       const tRes = await fetch('https://api.openai.com/v1/threads', {
         method: 'POST',
         headers: {
-          'Authorization': \`Bearer \${OPENAI_API_KEY}\`,
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
           'OpenAI-Beta': 'assistants=v2',
           'Content-Type': 'application/json'
         }
@@ -171,20 +171,20 @@ app.post('/chat', async (req, res) => {
       const tData = await tRes.json();
       console.log("📩 Thread creation response:", tData);
 
-      if (!tRes.ok || !tData.id) throw new Error(\`Thread creation failed: \${JSON.stringify(tData)}\`);
+      if (!tRes.ok || !tData.id) throw new Error(`Thread creation failed: ${JSON.stringify(tData)}`);
 
       tId = tData.id;
     }
 
-    console.log(\`✅ Using threadId: \${tId}\`);
-    res.write(\`data: \${JSON.stringify({ threadId: tId })}\\n\\n\`);
+    console.log(`✅ Using threadId: ${tId}`);
+    res.write(`data: ${JSON.stringify({ threadId: tId })}\n\n`);
 
     // Send user message
     console.log("📨 Sending message to thread...");
-    const msgRes = await fetch(\`https://api.openai.com/v1/threads/\${tId}/messages\`, {
+    const msgRes = await fetch(`https://api.openai.com/v1/threads/${tId}/messages`, {
       method: 'POST',
       headers: {
-        'Authorization': \`Bearer \${OPENAI_API_KEY}\`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json'
       },
@@ -194,14 +194,14 @@ app.post('/chat', async (req, res) => {
     const msgData = await msgRes.json();
     console.log("📩 Message send response:", msgData);
 
-    if (!msgRes.ok) throw new Error(\`Message send failed: \${JSON.stringify(msgData)}\`);
+    if (!msgRes.ok) throw new Error(`Message send failed: ${JSON.stringify(msgData)}`);
 
     // Start run stream
     console.log("📡 Starting run stream...");
-    const runRes = await fetch(\`https://api.openai.com/v1/threads/\${tId}/runs\`, {
+    const runRes = await fetch(`https://api.openai.com/v1/threads/${tId}/runs`, {
       method: 'POST',
       headers: {
-        'Authorization': \`Bearer \${OPENAI_API_KEY}\`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json'
       },
@@ -213,7 +213,7 @@ app.post('/chat', async (req, res) => {
 
     if (!runRes.ok || !runRes.body) {
       const errText = await runRes.text();
-      throw new Error(\`Run stream failed: \${errText}\`);
+      throw new Error(`Run stream failed: ${errText}`);
     }
 
     const reader = runRes.body.getReader();
@@ -225,7 +225,7 @@ app.post('/chat', async (req, res) => {
     
       const chunk = decoder.decode(value, { stream: true });
     
-      for (const line of chunk.split("\\n")) {
+      for (const line of chunk.split("\n")) {
         if (!line.startsWith("data: ")) continue;
 
         console.log("Json Response:", line);
@@ -235,7 +235,7 @@ app.post('/chat', async (req, res) => {
     
         if (data === "[DONE]") {
           console.log("✅ Stream completed");
-          res.write(\`data: \${JSON.stringify({ done: true })}\\n\\n\`);
+          res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
           break;
         }
     
@@ -246,7 +246,7 @@ app.post('/chat', async (req, res) => {
           if (event.object === "thread.message.delta" && event.delta?.content) {
             for (const block of event.delta.content) {
               if (block.type === "text" && block.text?.value) {
-                res.write(\`data: \${JSON.stringify({ delta: block.text.value })}\\n\\n\`);
+                res.write(`data: ${JSON.stringify({ delta: block.text.value })}\n\n`);
               }
             }
           }
@@ -257,17 +257,17 @@ app.post('/chat', async (req, res) => {
       }
     }
     
-    res.write(\`data: \${JSON.stringify({ done: true })}\\n\\n\`);
+    res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
   } catch (err) {
     console.error("💥 Server error:", err);
-    res.write(\`data: \${JSON.stringify({ error: err.message })}\\n\\n\`);
+    res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
     res.end();
   }
 });
 
 app.listen(PORT, () => {
-  console.log(\`🚀 Server running on port \${PORT}\`);
-  console.log(\`📱 Embed script: https://openai-assistants-api-production.up.railway.app/inline-embed.js\`);
-  console.log(\`🎯 Demo page: https://openai-assistants-api-production.up.railway.app/demo\`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📱 Embed script: https://openai-assistants-api-production.up.railway.app/inline-embed.js`);
+  console.log(`🎯 Demo page: https://openai-assistants-api-production.up.railway.app/demo`);
 });
