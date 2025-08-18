@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ASSISTANT_ID = process.env.ASSISTANT_ID;
 const PUBLIC_ORIGIN = process.env.PUBLIC_ORIGIN || 'https://openai-assistants-api-production.up.railway.app';
