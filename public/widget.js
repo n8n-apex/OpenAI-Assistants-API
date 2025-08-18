@@ -5,10 +5,10 @@
   link.href = 'https://openai-assistants-api-production.up.railway.app/style.css';
   document.head.appendChild(link);
 
-  // 2. Inject HTML
+  // 2. Inject HTML (no toggle button anymore)
   const container = document.createElement('div');
   container.innerHTML = `
-    <div id="chat-widget">
+    <div id="chat-widget" style="display:flex;">
       <div id="chat-header">💬 Ask AI</div>
       <div id="chat-body"></div>
       <div id="chat-input-area">
@@ -21,23 +21,15 @@
         </button>
       </div>
     </div>
-    <button id="chat-toggle">💬</button>
   `;
   document.body.appendChild(container);
 
-  // 3. Toggle open/close
-  document.getElementById("chat-toggle").addEventListener("click", () => {
-    const widget = document.getElementById("chat-widget");
-    widget.style.display = widget.style.display === "flex" ? "none" : "flex";
-
-    // 👉 When opening for the first time, show suggestions
-    if (widget.style.display === "flex" && !widget.dataset.initialized) {
-      if (typeof renderSuggestions === "function") {
-        renderSuggestions();
-      }
-      widget.dataset.initialized = "true"; // mark as initialized
-    }
-  });
+  // 3. Call suggestions immediately when widget loads
+  const widget = document.getElementById("chat-widget");
+  if (typeof renderSuggestions === "function") {
+    renderSuggestions();
+    widget.dataset.initialized = "true";
+  }
 
   // 4. Inject app.js
   const script = document.createElement('script');
