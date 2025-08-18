@@ -104,7 +104,7 @@ app.post('/chat', async (req, res) => {
       for (const line of chunk.split("\n")) {
         if (!line.startsWith("data: ")) continue;
 
-        //console.log("Json Response:", line);
+        console.log("Json Response:", line);
     
         const data = line.slice(6).trim();
         if (!data) continue;
