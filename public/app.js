@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/chat';
+const API_URL = 'https://openai-assistants-api-production.up.railway.app/chat';
 let threadId = '';
 let suggestionsVisible = true; // track if suggestions are on screen
 
