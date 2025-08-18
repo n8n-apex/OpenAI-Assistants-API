@@ -3,10 +3,10 @@ let threadId = '';
 let suggestionsVisible = true; // track if suggestions are on screen
 
 // Toggle widget visibility
-document.getElementById('chat-toggle').addEventListener('click', () => {
-  const widget = document.getElementById('chat-widget');
-  widget.style.display = widget.style.display === 'flex' ? 'none' : 'flex';
-});
+//document.getElementById('chat-toggle').addEventListener('click', () => {
+//  const widget = document.getElementById('chat-widget');
+//  widget.style.display = widget.style.display === 'flex' ? 'none' : 'flex';
+//});
 
 // Send on button click
 document.getElementById('send-btn').addEventListener('click', sendMessage);
