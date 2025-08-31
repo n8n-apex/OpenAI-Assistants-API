@@ -392,7 +392,7 @@
     chatBody.scrollTop = chatBody.scrollHeight;
     return msg;
   }
-/*
+
   function showSuggestions() {
     if (!hasSuggestions) return;
     
@@ -404,19 +404,7 @@
       'Wie lautet deine bisherige Positionierung?',
       'Hilf mir bei meiner Content-Strategie.'
     ];
-  */
-  function showSuggestions() {
-    if (!hasSuggestions) return;
-  
-    const welcomeMessage = document.createElement('div');
-    welcomeMessage.className = 'welcome-message';
-    welcomeMessage.innerHTML = `<h4>Hey! Schön, dass du da bist! 👋</h4>
-    <p>Ich bin dein APEX Learning Buddy und helfe dir dabei, deine Lernziele zu erreichen. Egal ob du Fragen zu einem bestimmten Thema hast, Hilfe beim Verstehen brauchst oder einfach motiviert werden möchtest - ich bin für dich da!</p>
-    <p><strong>Sollen wir loslegen? 🚀</strong></p>`;
-  
-  chatBody.appendChild(welcomeMessage);
-  }
-    
+      
     suggestionTexts.forEach(text => {
       const suggestion = document.createElement('div');
       suggestion.className = 'modern-chat-suggestion';
