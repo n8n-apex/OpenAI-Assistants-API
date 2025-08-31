@@ -7,7 +7,7 @@
   const API_URL = 'https://openai-assistants-api-production.up.railway.app/chat';
   const TARGET = script.getAttribute('data-target');
   const HEIGHT = script.getAttribute('data-height') || '600px';
-  const TITLE = script.getAttribute('data-title') || 'APEX Learning Buddy';
+  const TITLE = script.getAttribute('data-title') || 'Bildungsfabrik Learning Buddy';
 
   // Find or create container
   let container;
@@ -392,7 +392,7 @@
     chatBody.scrollTop = chatBody.scrollHeight;
     return msg;
   }
-
+/*
   function showSuggestions() {
     if (!hasSuggestions) return;
     
@@ -404,6 +404,18 @@
       'Wie lautet deine bisherige Positionierung?',
       'Hilf mir bei meiner Content-Strategie.'
     ];
+  */
+  function showSuggestions() {
+    if (!hasSuggestions) return;
+  
+    const welcomeMessage = document.createElement('div');
+    welcomeMessage.className = 'welcome-message';
+    welcomeMessage.innerHTML = `<h4>Hey! Schön, dass du da bist! 👋</h4>
+    <p>Ich bin dein APEX Learning Buddy und helfe dir dabei, deine Lernziele zu erreichen. Egal ob du Fragen zu einem bestimmten Thema hast, Hilfe beim Verstehen brauchst oder einfach motiviert werden möchtest - ich bin für dich da!</p>
+    <p><strong>Sollen wir loslegen? 🚀</strong></p>`;
+  
+  chatBody.appendChild(welcomeMessage);
+  }
     
     suggestionTexts.forEach(text => {
       const suggestion = document.createElement('div');
