@@ -439,7 +439,7 @@
     const botMsg = addMessage('', 'bot');
     const typing = document.createElement('div');
     typing.className = 'modern-chat-typing';
-    typing.innerHTML = 'Ich arbeite an Ihrer Antwort <span></span><span></span><span></span>';
+    typing.innerHTML = 'Ich arbeite an einer Antwort <span></span><span></span><span></span>';
     chatBody.appendChild(typing);
     chatBody.scrollTop = chatBody.scrollHeight;
 
