@@ -400,9 +400,7 @@
     suggestions.className = 'modern-chat-suggestions';
     
     const suggestionTexts = [
-      'Frag mich zu einem Thema aus Woche 1–16 ab!',
-      'Hilf mir, die Unterschiede zwischen zwei Konzepten zu verstehen.',
-      'Gib mir eine praxisnahe Übungsfrage aus den Kursunterlagen.'
+      'Frag mich ab!'
     ];
       
     suggestionTexts.forEach(text => {
